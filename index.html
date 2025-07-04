@@ -1,47 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Water Landing Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hope Flows Here - charity: water</title>
+    <style>
+        body {
+            margin: 0;
+            /* Use Proxima Nova first, then fall back to Arial and sans-serif */
+            font-family: 'Proxima Nova', Arial, sans-serif;
+            background-color: #fdf5ec; /* soft cream */
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            min-height: 100vh;
+        }
+        .left {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center content horizontally */
+        }
+        .left h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center; /* Center text inside the h1 */
+        }
+        .box {
+            background-color: #d1d5db; /* soft gray */
+            padding: 2.5rem 1.5rem; /* Make the gray box taller */
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            width: 260px; /* Set a fixed width for both boxes */
+            max-width: 100%;
+            text-align: center; /* Center text inside the box */
+            font-size: 2rem; /* Make text much bigger to fit the box */
+        }
+        .cta {
+            background-color: #93c5fd; /* soft blue */
+            border-radius: 1rem;
+            width: 260px; /* Match the width of the gray box */
+            max-width: 100%;
+            text-align: center; /* Center text inside the cta */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 4.5rem; /* Make Tap in very big */
+            line-height: 1.1;
+            padding: 2.2rem 0.5rem; /* Make the blue box tall and clickable */
+            font-weight: normal;
+            user-select: none;
+        }
+        .cta:hover {
+            background-color: #60a5fa;
+        }
+        .logo {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .logo img {
+            height: 30px;
+        }
+        .right {
+            flex: 1;
+            min-width: 300px;
+            background: url('https://source.unsplash.com/600x800/?africa,child') center/cover no-repeat;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .right {
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Hero Section: This is the main banner at the top of the page -->
-    <section class="hero">
-        <!-- Main headline -->
-        <h1>Clean Water for Everyone</h1>
-        <!-- Subheadline -->
-        <p>Join us in bringing safe, clean water to communities in need.</p>
-    </section>
-
-    <!-- Story Section: This tells the story of the nonprofit -->
-    <section class="story">
-        <h2>Our Story</h2>
-        <p>
-         
-    </section>
-
-    <!-- Real-World Impact Story Section -->
-    <section class="impact-story">
-        <!-- Section headline -->
-        <h2>Real Impact: Meet Amina</h2>
-        <!-- Container for image and text -->
-        <div class="impact-content">
-            <!-- Impact image -->
-            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Amina smiling with clean water" class="impact-image">
-            <!-- Impact story text -->
-            <p>
-                Amina used to walk miles every day to collect water for her family. Thanks to your support, her village now has a clean water well. Amina can go to school and her family is healthier and happier.
-            </p>
+    <div class="container">
+        <div class="left">
+            <!-- Logo image for charity: water -->
+            <div style="margin-bottom: 1rem; width: 100%; display: flex; justify-content: flex-start;">
+                <!-- Left-aligned logo for beginners -->
+                <img src="img/cw_logo-2.png" alt="charity: water logo" style="height: 40px; display: block;">
+            </div>
+            <!-- Heading goes under the logo -->
+            <h1 style="margin: 0 0 1.5rem 0; font-size: 2.5rem;">Hope Flows Here</h1>
+            <div class="box">
+                Anyone can help our mission to clean water so start today
+            </div>
+            <div class="cta">
+                <!-- The blue box is now the button itself -->
+                <span id="confetti-btn" style="color: #333; display: block; width: 100%; cursor: pointer; background: none; border: none; outline: none; font: inherit; text-align: center;">
+                    Tap in
+                </span>
+            </div>
+            <div class="logo">
+                <!-- Logo moved to the top, so this is now empty or can be removed -->
+            </div>
         </div>
-    </section>
-
-    <!-- Call-to-Action Section: This encourages visitors to take action -->
-    <section class="call-to-action">
-        <h2>Make a Difference</h2>
-        <p>Your support can help save lives. Every donation brings us closer to a world with clean water for all.</p>
-        <a href="#" class="donate-button">Donate Now</a>
-    </section>
+        <div class="right">
+            <!-- Show screenshot image on the right side -->
+            <!-- Screenshot image with a tiny black border -->
+            <img src="img/Screenshot 2025-06-26 at 8.15.53 PM.png" alt="Screenshot 2025" style="width: 100%; height: auto; border-radius: 1rem; border: 1px solid #000;">
+        </div>
+        <!-- Confetti container -->
+        <canvas class="confetti" id="confetti-canvas"></canvas>
+        </div>
+    </div>
 </body>
+<script>
+// Simple confetti effect for beginners
+const button = document.getElementById('confetti-btn');
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let confettiParticles = [];
+
+// Resize canvas to fill the window
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Create random confetti particles
+function createConfetti() {
+  confettiParticles = [];
+  for (let i = 0; i < 80; i++) {
+    confettiParticles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height,
+      r: 6 + Math.random() * 6,
+      d: Math.random() * 80,
+      color: `hsl(${Math.random() * 360}, 80%, 60%)`,
+      tilt: Math.random() * 10 - 5,
+      tiltAngle: 0,
+      tiltAngleIncremental: (Math.random() * 0.07) + 0.05
+    });
+  }
+}
+
+// Draw confetti
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confettiParticles.forEach(p => {
+    ctx.beginPath();
+    ctx.ellipse(p.x, p.y, p.r, p.r / 2, p.tilt, 0, 2 * Math.PI);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+  });
+}
+
+// Animate confetti
+function animateConfetti() {
+  let finished = true;
+  confettiParticles.forEach(p => {
+    p.y += 3 + Math.random() * 2;
+    p.tilt += p.tiltAngleIncremental;
+    if (p.y < canvas.height + 20) finished = false;
+  });
+  drawConfetti();
+  if (!finished) {
+    requestAnimationFrame(animateConfetti);
+  }
+}
+
+// Show confetti when blue box (cta) is clicked
+const ctaBox = document.querySelector('.cta');
+ctaBox.addEventListener('click', function() {
+  createConfetti();
+  animateConfetti();
+});
+</script>
 </html>
+
